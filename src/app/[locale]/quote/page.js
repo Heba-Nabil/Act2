@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import QuoteForm from "@/components/QuoteForm";
 import { fetchContactPage } from "@/services/ContactPageContent";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import fetchData from "@/utils/fetchData";
 // import Marquee from "@/components/home/Marquee";
 
 export async function generateMetadata({ params: { locale } }) {
