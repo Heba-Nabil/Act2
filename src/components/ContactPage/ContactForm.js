@@ -61,6 +61,9 @@ const ContactForm = ({ projectConfig }) => {
         }
       } catch (error) {
         console.log(error);
+      } finally{
+        setCaptchaError("")
+
       }
     }else {
         setCaptchaError("This feild is required")
