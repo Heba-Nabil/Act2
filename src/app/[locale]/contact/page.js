@@ -4,6 +4,7 @@ import ContactForm from "@/components/ContactPage/ContactForm";
 // import Marquee from "@/components/home/Marquee";
 import { fetchContactPage } from "@/services/ContactPageContent";
 import { fetchHomePage } from "@/services/HomePageContent";
+import fetchData from "@/utils/fetchData";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -46,6 +47,9 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 const ContactPage = async ({ params: { locale } }) => {
+  const projectConfig = await fetchData(
+    `${process.env.BASE_URL}/${process.env.PROJECT_CODE}/ProjectConfiguration`
+  )
   const { contactInfo } = await fetchHomePage(locale);
   const { marqueeContact } = await fetchContactPage(locale);
   const crumbs = [
@@ -66,7 +70,7 @@ const ContactPage = async ({ params: { locale } }) => {
               <ContactData locale={locale} data={contactInfo} />
             </div>
             <div className="w-full lg:w-1/2 xl:w-6/12">
-              <ContactForm />
+              <ContactForm projectConfig={projectConfig}/>
             </div>
           </div>
         </div>

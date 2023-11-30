@@ -1,14 +1,25 @@
 "use client"
 
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { ResourcesContext } from "@/contexts/DataContext";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import AnimatedTitle from "./AnimatedTitle";
 import { Buttons } from "./GlobalButtons";
+import ReCAPTCHA from "react-google-recaptcha";
 
 
-const QuoteForm = () => {
+
+const QuoteForm = ({ projectConfig }) => {
+    const [captchaData, setCaptchaData] = useState("");
+    const [captchaError, setCaptchaError] = useState("");
+    const captchaRef = useRef(null);
+    const handleCaptchaChange = () => {
+      const token = captchaRef.current.getValue();
+      if (token) {
+        setCaptchaData(token);
+      }
+    };
     const { useTranslate } = useContext(ResourcesContext);
 
     const {
@@ -29,6 +40,7 @@ const QuoteForm = () => {
 
 
     const SubmitContact = async (data) => {
+        if (captchaData) {
         const formattedMessage = `
             Company Name: ${data.company} <br/>
             Company Subject: ${data.companySubject} <br/>
@@ -58,6 +70,9 @@ const QuoteForm = () => {
         } catch (error) {
             console.log(error)
         }
+    }else {
+        setCaptchaError("This feild is required")
+    }
     }
 
     return (
@@ -137,6 +152,18 @@ const QuoteForm = () => {
                         {...register('message')}
                     ></textarea>
                 </div>
+                {projectConfig.CaptchaClientKey && (
+          <div className="mb-6">
+            <ReCAPTCHA
+              sitekey={projectConfig.CaptchaClientKey}
+              ref={captchaRef}
+              onChange={handleCaptchaChange}
+            />
+            {captchaError && (
+              <span className="text-red-500">{captchaError}</span>
+            )}
+          </div>
+        )}
                 <div>
                     {/* <button
                         type="submit"

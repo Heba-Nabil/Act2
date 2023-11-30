@@ -37,6 +37,9 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 const QuotePage = async ({ params: { locale } }) => {
+  const projectConfig = await fetchData(
+    `${process.env.BASE_URL}/${process.env.PROJECT_CODE}/ProjectConfiguration`
+  )
   const { marqueeQuote } = await fetchContactPage(locale)
   const crumbs = [
     { title: "Home", href: "/" },
@@ -50,7 +53,7 @@ const QuotePage = async ({ params: { locale } }) => {
         <div className="container mx-auto px-5 lg:px-20">
           <div className="py-5 md:py-10 flex flex-wrap lg:justify-center">
             <div className="w-full lg:w-1/2 xl:w-6/12">
-              <QuoteForm />
+              <QuoteForm projectConfig={projectConfig}/>
             </div>
           </div>
         </div>
