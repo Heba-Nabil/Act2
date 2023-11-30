@@ -129,7 +129,8 @@ const ContactForm = ({ projectConfig }) => {
         {projectConfig.CaptchaClientKey && (
           <div className="mb-6">
             <ReCAPTCHA
-              sitekey={projectConfig.CaptchaClientKey}
+               sitekey={projectConfig?.CaptchaClientKey}
+               stoken={projectConfig?.CaptchaSecretKey}
               ref={captchaRef}
               onChange={handleCaptchaChange}
             />
